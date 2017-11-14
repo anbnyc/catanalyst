@@ -1,0 +1,28 @@
+.tile polygon {
+  stroke: #bbb;
+  stroke-width: 1px; }
+
+.tile.sheep polygon {
+  fill: #76B712; }
+
+.tile.wood polygon {
+  fill: #0E5A20; }
+
+.tile.wheat polygon {
+  fill: #F9BC00; }
+
+.tile.ore polygon {
+  fill: #524D30; }
+
+.tile.brick polygon {
+  fill: #B66E28; }
+
+.tile.desert polygon {
+  fill: #E9D168; }
+
+.tile.starter polygon {
+  stroke: #f00;
+  stroke-width: 2px; }
+
+.tile .letter {
+  text-anchor: middle; }

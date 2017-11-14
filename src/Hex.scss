@@ -1,0 +1,33 @@
+$materials:
+	sheep #76B712,
+	wood #0E5A20,
+	wheat #F9BC00,
+	ore #524D30,
+	brick #B66E28,
+	desert #E9D168;
+
+.tile{
+	polygon{	
+		stroke: #bbb;
+		stroke-width: 1px;
+	}
+	@each $var in $materials{		
+		&.#{nth($var,1)} {
+			polygon{
+				fill: nth($var,2);
+			}
+		}
+	}
+
+	&.starter{
+		polygon{
+			stroke: #f00;
+			stroke-width: 2px;
+		}
+	}
+
+	.letter{
+		text-anchor: middle;
+	}
+
+}
