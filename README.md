@@ -1,3 +1,9 @@
+# Catanalyst
+This app provides analytics on randomly generated boards for the game Settlers of Catan. (This is a fan project and not affiliated with the makers of the game.)
+
+The app uses algorithms from the site [RedBlobGames](https://www.redblobgames.com/grids/hexagons/).
+
+# `create-react-app` boilerplate
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
