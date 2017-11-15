@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import Hex from './Hex'
+import Viz from './Viz'
 import Slider from './Slider'
 
 class App extends Component {
@@ -27,7 +27,7 @@ class App extends Component {
             sliderValue={+this.state.sliderValue} />
           <button onClick={() => { this.child.updateTiles() }}>Reset Board</button>
         </div>
-        <Hex 
+        <Viz 
           ref={hex => { this.child = hex }}
           sliderValue={+this.state.sliderValue}
           hexPerSide={3}

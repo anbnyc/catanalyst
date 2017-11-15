@@ -1,10 +1,4 @@
-$materials:
-	sheep #76B712,
-	wood #0E5A20,
-	wheat #F9BC00,
-	ore #524D30,
-	brick #B66E28,
-	desert #E9D168;
+@import './variables.scss';
 
 .tile{
 	polygon{	
@@ -14,6 +8,7 @@ $materials:
 	@each $var in $materials{		
 		&.#{nth($var,1)} {
 			polygon{
+				transition: fill 0.5s ease;
 				fill: nth($var,2);
 			}
 		}
@@ -27,7 +22,11 @@ $materials:
 	}
 
 	.letter{
+		font-size: 12px;
 		text-anchor: middle;
+		&.highlight{
+			font-weight: bold;
+		}
 	}
 
 }

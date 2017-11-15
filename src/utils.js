@@ -28,9 +28,8 @@ const odds = {
 	P: [6,5],
 	Q: [3,2],
 	R: [11,2],
-	desert: [0,0],
+	desert: [7,6],
 }
-
 
 function getAllTiles() {
 	const tileDistribution = {
