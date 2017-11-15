@@ -15,7 +15,7 @@ class Hex extends Component {
   }
 
   componentDidMount(){
-  	d3.select(".hex-container").attr("transform", "translate(120,30)")
+  	d3.select(".hex-container").attr("transform", "translate(125,30)")
   }
 
 	componentDidUpdate(){
@@ -42,10 +42,10 @@ class Hex extends Component {
 	  tiles.select("polygon")
 	  	.attr("points", hexPath(sideLen, r3o2s))
 		tiles.select("text")
-			.attr("y", sideLen)
+			.attr("y", sideLen+3)
 			.attr("class", "letter")
 			.classed("highlight", d => d.odds.roll === 6 || d.odds.roll === 8)
-			.text(d => d.odds.roll + " ("+d.odds.letter+")")
+			.text(d => d.odds.letter === 'desert' ? '' : d.odds.roll + " ("+d.odds.letter+")")
 	}
 
 }

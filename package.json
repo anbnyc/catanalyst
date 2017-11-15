@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "d3": "^4.11.0",
+    "gh-pages": "^1.0.0",
     "hex-data-gen": "^0.1.1",
     "node-sass-chokidar": "0.0.3",
     "npm-run-all": "^4.1.2",
@@ -11,7 +12,10 @@
     "react-dom": "^16.1.1",
     "react-scripts": "1.0.17"
   },
+  "homepage": "https://anbnyc.github.io/catanalyst",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "build-css": "node-sass-chokidar src/ -o src/",

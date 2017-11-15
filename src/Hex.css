@@ -31,7 +31,8 @@
   stroke-width: 2px; }
 
 .tile .letter {
-  font-size: 12px;
+  font-family: Garamond;
+  font-size: 16px;
   text-anchor: middle; }
   .tile .letter.highlight {
     font-weight: bold; }

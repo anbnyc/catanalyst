@@ -12,7 +12,7 @@ class Bar extends Component {
   }
 
   componentDidMount(){
-  	d3.select(".bar-container").attr("transform", "translate(550,30)")
+  	d3.select(".bar-container").attr("transform", "translate(515,30)")
   }
 
 	componentDidUpdate(){

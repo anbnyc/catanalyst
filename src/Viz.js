@@ -57,18 +57,22 @@ class Viz extends Component {
   }
 
   reshapeBarData(data){
-  	return data.reduce((t,v) => 
+  	let barData = data.reduce((t,v) => 
   		({ 
 				...t, 
 				[v.tile]: [ 
 					...(t[v.tile] ? t[v.tile] : []), 
-					{ 
-						...v.odds, 
-						sum: (t[v.tile] ? t[v.tile].slice(-1)[0].sum + v.odds.probability : v.odds.probability)
-					} 
+					v.odds
 				]
 			}), 
 		{})
+		for(var k in barData){
+			barData[k] = [ ...barData[k] ].sort((a,b) => b.probability - a.probability)
+			for(var i = 0; i < barData[k].length; i++){
+				barData[k][i].sum = (i === 0 ? 0 : barData[k][i - 1].sum) + barData[k][i].probability
+			}
+		}
+		return barData
   }
 
 	generateData(){
