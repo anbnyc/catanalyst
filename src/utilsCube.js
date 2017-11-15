@@ -38,7 +38,7 @@ function cubeScale(cube, radius){
 }
 
 function cubeNeighbor(cube, direction){
-	return cubeAdd(cube, cubeDirections[direction])
+	return cubeAdd(cube, cubeDirections[(direction + 6) % 6]) //offset based on RedHexGames
 }
 
 function cubeRing(center, radius, corner = 4){
@@ -50,7 +50,7 @@ function cubeRing(center, radius, corner = 4){
 	for(var i = 0; i < 6; i++){
 		for(var j = 0; j < radius; j++){
 			results.push(cube);
-			cube = cubeNeighbor(cube, i)
+			cube = cubeNeighbor(cube, i + corner - 4) //offset based on RedHexGames
 		}		
 	}
   return results

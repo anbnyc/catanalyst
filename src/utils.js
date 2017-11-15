@@ -27,7 +27,8 @@ const odds = {
 	O: [5,4],
 	P: [6,5],
 	Q: [3,2],
-	R: [11,2]
+	R: [11,2],
+	desert: [0,0],
 }
 
 
@@ -49,7 +50,7 @@ function getAllTiles() {
 			}
 			return [...t, ...next]
 		}, [])
-		.sort((a,b) => Math.random())
+		.sort((a,b) => .5 - Math.random())
 }
 
 module.exports = {

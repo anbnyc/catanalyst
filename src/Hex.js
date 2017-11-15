@@ -12,93 +12,32 @@ class Hex extends Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			hexPerSide: 3,
-			sideLen: 40,
+			allTiles: getAllTiles(),
+			newTiles: false
 		}
-	}
-
-	componentWillMount(){
-		let allTiles = getAllTiles()
-		let data = HexDataGen(this.state.hexPerSide, false)
-			.map(r => 
-				r.map(c => 
-					({ ...c, tile: allTiles.pop(), cube: cubeCoordinates(c, this.state.hexPerSide) })
-			))
-		this.setState({
-			data,
-			r3o2s: this.state.sideLen * Math.sqrt(3)/2
-		})
+		this.updateLetters = this.updateLetters.bind(this)
+		this.generateData = this.generateData.bind(this)
+		this.updateTiles = this.updateTiles.bind(this)
 	}
 
 	componentDidMount(){
-		const { hexPerSide, sideLen, data, r3o2s } = this.state
-
-		var spiral = cubeSpiral(new Cube(0, 0, 0), 3).map(flatCube)//.reverse()
-
-		let svg = d3.select("svg")
+		d3.select("svg")
 			.attr("height", 600)
 			.attr("width", 1000)
 			.append("g")
-			.attr("transform", "translate(100,100)")
-		let rows = svg.selectAll("g.row")
-			.data(data)
-			.enter().append("g")
-			.attr("class","row")
-	    .attr("transform",(d,i)=>
-				"translate("+
-	      	(sideLen + r3o2s*Math.abs(i - hexPerSide + 1))+
-	      	","+
-	      	(i*1.5*sideLen)+")");
-
-    let tiles = rows.selectAll("g.tile")
-    	.data(d => d)
-    	.enter().append("g")
-    	.attr("class", d => "tile "+d.tile+
-    		" "+(cubeEqual(new Cube((hexPerSide - 1),(1 - hexPerSide),0), d.cube) ? "starter" : ""))
-    	.attr("transform", (d,i)=>"translate("+i*2*r3o2s+",0)");
-console.log(Object.keys(odds), spiral)
-    tiles.append("polygon")
-    	.attr("points", hexPath(sideLen, r3o2s))
-    let desertSeen = 0
-  	tiles.append("text")
-  		.attr("y", this.state.sideLen)
-  		.attr("class", "letter")
-  		.text(d => {
-  			if(d.tile === 'desert'){
-  				desertSeen = 1
-  				return 'desert'
-  			} else {
-  				return Object.keys(odds)[ spiral.indexOf(flatCube(d.cube)) - desertSeen ] 
-  			}
-  		})
-
-///CUBE COORDS
-  	// tiles.append("text")
-  	// 	.attr("x", 20)
-  	// 	.attr("y", 30)
-  	// 	.text(d => d.cube.x)
-  	// tiles.append("text")
-  	// 	.attr("x", -27)
-  	// 	.attr("y", 30)
-  	// 	.text(d => d.cube.y)
-  	// tiles.append("text")
-  	// 	.attr("x", 0)
-  	// 	.attr("y", 70)
-  	// 	.text(d => d.cube.z)
-///AXIAL COORDS
-		// tiles.append("text")
-		// 	.attr("x", -8)
-		// 	.attr("y", 44)
-		// 	.text(d => (d.cell - Math.min(hexPerSide - 1, d.row))+","+(d.row + 1 - hexPerSide))
-
+			.attr("class","container")
+			.attr("transform", "translate(300,100)")
+		let data = this.generateData()
+		this.updateLetters(data)
+		this.setState({ data })
 	}
 
-	componentDidUpdate(){
-		const corner = cubeScale(
-			cubeNeighbor(new Cube(0,0,0), this.props.sliderValue),
-			this.state.hexPerSide - 1)
-		d3.selectAll("g.tile")
-			.classed("starter", d => cubeEqual(d.cube, corner))
+	componentDidUpdate(nextProps){
+		if(this.props.sliderValue !== nextProps.sliderValue || this.state.newTiles){
+			let data = this.generateData()
+			this.updateLetters(data)
+			this.setState({ data, newTiles: false })
+		}
 	}
 
   render() {
@@ -108,6 +47,64 @@ console.log(Object.keys(odds), spiral)
       </div>
     );
   }
+
+  updateTiles(){
+  	this.setState({
+  		allTiles: getAllTiles(),
+  		newTiles: true
+  	})
+  }
+
+	updateLetters(data){
+		const { hexPerSide, sideLen, sliderValue } = this.props
+		const r3o2s = sideLen * Math.sqrt(3)/2
+		let tiles = d3.select(".container").selectAll("g.tile")
+	  	.data(data)
+		tiles.exit().remove();
+		let tilesEnter = tiles.enter().append("g")
+		tilesEnter.append("polygon")
+		tilesEnter.append("text")
+	  tiles = tilesEnter.merge(tiles)
+	  	.attr("class", d => "tile "+d.tile)
+	  	.classed("starter", d => cubeEqual(cubeScale(cubeNeighbor(new Cube(0,0,0), sliderValue), hexPerSide - 1), d.cube) )
+	  	.attr("transform", d =>
+				"translate("+
+	      	(sideLen + r3o2s*Math.abs(d.row - hexPerSide + 1) + (d.cell*2*r3o2s))+
+	      	","+
+	      	(d.row*1.5*sideLen)+")");
+	  tiles.select("polygon")
+	  	.attr("points", hexPath(sideLen, r3o2s))
+		tiles.select("text")
+			.attr("y", sideLen)
+			.attr("class", "letter")
+			.text(d => d.odds.letter)
+	}
+
+	generateData(){
+		let allTiles = [ ...this.state.allTiles ]
+		let rawData = HexDataGen(this.props.hexPerSide, false)
+			.reduce((t,r) => [ ...t, ...r ])
+		const spiral = cubeSpiral(new Cube(0, 0, 0), 3, (this.props.sliderValue + 1) % 6).map(flatCube).reverse()
+		const desertLocation = spiral.indexOf(flatCube(cubeCoordinates(rawData[allTiles.indexOf('desert')], this.props.hexPerSide)))
+		let oddsKeys = Object.keys(odds)
+		let oddsSorted = [ ...oddsKeys.slice(0,desertLocation), ...oddsKeys.slice(-1), ...oddsKeys.slice(desertLocation, -1) ]
+		return rawData.map(c => {
+			let cube = cubeCoordinates(c, this.props.hexPerSide)
+			let letter = oddsSorted[ spiral.indexOf(flatCube(cube)) ]
+			return { 
+				...c, 
+				cube,
+				tile: allTiles.splice(0,1),
+				odds: {
+					letter,
+					roll: odds[letter][0],
+					probability: odds[letter][1]
+				}
+			}
+		})
+	}
+
 }
+
 
 export default Hex;

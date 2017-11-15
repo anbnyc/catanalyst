@@ -21,11 +21,17 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Slider 
-          onSliderChange={this.onSliderChange} 
-          sliderValue={this.state.sliderValue} />
+        <div>
+          <Slider 
+            onSliderChange={this.onSliderChange} 
+            sliderValue={+this.state.sliderValue} />
+          <button onClick={() => { this.child.updateTiles() }}>Reset Board</button>
+        </div>
         <Hex 
-          sliderValue={this.state.sliderValue}/>
+          ref={hex => { this.child = hex }}
+          sliderValue={+this.state.sliderValue}
+          hexPerSide={3}
+          sideLen={40} />
       </div>
     );
   }
