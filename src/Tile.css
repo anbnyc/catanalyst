@@ -36,3 +36,5 @@
   text-anchor: middle; }
   .tile .letter.highlight {
     font-weight: bold; }
+  .tile .letter .small {
+    font-size: 12px; }
