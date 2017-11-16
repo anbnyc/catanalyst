@@ -1,3 +1,8 @@
+.bar-container .bar .material {
+  font-family: Garamond;
+  font-size: 16px;
+  text-anchor: end; }
+
 .bar-container .bar rect {
   stroke-width: 1px;
   stroke: #bbb; }

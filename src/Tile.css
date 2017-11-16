@@ -27,8 +27,8 @@
   fill: #E9D168; }
 
 .tile.starter polygon {
-  stroke: #f00;
-  stroke-width: 2px; }
+  stroke: #000;
+  stroke-width: 3px; }
 
 .tile .letter {
   font-family: Garamond;

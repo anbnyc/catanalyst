@@ -19,6 +19,7 @@ class App extends Component {
   }
 
   render() {
+    const sideLen = window.innerWidth - 15 < 768 ? window.innerWidth / 20 : 40
     return (
       <div className="App">
         <div>
@@ -31,7 +32,8 @@ class App extends Component {
           ref={hex => { this.child = hex }}
           sliderValue={+this.state.sliderValue}
           hexPerSide={3}
-          sideLen={40} />
+          sideLen={sideLen}
+          width={window.innerWidth - 15} />
       </div>
     );
   }

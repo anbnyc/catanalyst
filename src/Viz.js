@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import * as HexDataGen from 'hex-data-gen';
 
 import { odds, getAllTiles } from './utils'
-import { cubeCoordinates, cubeSpiral, Cube, flatCube } from './utilsCube'
+import { cubeScale, cubeEqual, cubeNeighbor, cubeCoordinates, cubeSpiral, Cube, flatCube } from './utilsCube'
 import Hex from './Hex'
 import Bar from './Bar'
 
@@ -22,8 +22,8 @@ class Viz extends Component {
 
 	componentDidMount(){
 		d3.select("svg")
-			.attr("height", 600)
-			.attr("width", 1000)
+			.attr("height", 330)
+			.attr("width", this.props.width)
 		let data = this.generateData()
 		this.setState({ data, barData: this.reshapeBarData(data) })
 	}
@@ -39,10 +39,11 @@ class Viz extends Component {
     return (
       <div className="Hex">
       	<svg>
-      		<Hex 
+      		<Hex
       			{ ...this.props }
       			data={this.state.data} />
     			<Bar
+    				{ ...this.props }
     				barData={this.state.barData} />
       	</svg>
       </div>
@@ -76,20 +77,23 @@ class Viz extends Component {
   }
 
 	generateData(){
+		const { sliderValue, hexPerSide } = this.props
 		let allTiles = [ ...this.state.allTiles ]
-		let rawData = HexDataGen(this.props.hexPerSide, false)
+		let rawData = HexDataGen(hexPerSide, false)
 			.reduce((t,r) => [ ...t, ...r ])
-		const spiral = cubeSpiral(new Cube(0, 0, 0), 3, (this.props.sliderValue + 1) % 6).map(flatCube).reverse()
-		const desertLocation = spiral.indexOf(flatCube(cubeCoordinates(rawData[allTiles.indexOf('desert')], this.props.hexPerSide)))
+		const spiral = cubeSpiral(new Cube(0, 0, 0), 3, (sliderValue + 1) % 6).map(flatCube).reverse()
+		const desertLocation = spiral.indexOf(flatCube(cubeCoordinates(rawData[allTiles.indexOf('desert')], hexPerSide)))
 		let oddsKeys = Object.keys(odds)
 		let oddsSorted = [ ...oddsKeys.slice(0,desertLocation), ...oddsKeys.slice(-1), ...oddsKeys.slice(desertLocation, -1) ]
+		let starter = cubeScale(cubeNeighbor(new Cube(0,0,0), sliderValue), hexPerSide - 1)
 		return rawData.map(c => {
-			let cube = cubeCoordinates(c, this.props.hexPerSide)
+			let cube = cubeCoordinates(c, hexPerSide)
 			let letter = oddsSorted[ spiral.indexOf(flatCube(cube)) ]
 			return { 
 				...c, 
 				cube,
 				tile: allTiles.splice(0,1)[0],
+				starter: cubeEqual(starter, cube),
 				odds: {
 					letter,
 					roll: odds[letter][0],
