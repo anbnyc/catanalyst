@@ -7,8 +7,6 @@ function hexPath(s,r3o2s){
     " "+r3o2s+","+(s/2);
 }
 
-const flatCube = cube => "x"+cube.x+"y"+cube.y+"z"+cube.z;
-
 const odds = {
 	A: [5,4],
 	B: [2,1],
@@ -56,5 +54,4 @@ module.exports = {
 	hexPath,
 	odds,
 	getAllTiles,
-	flatCube,
 }

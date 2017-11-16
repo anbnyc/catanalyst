@@ -4,6 +4,8 @@ function Cube(x,y,z){
 	this.z = z;
 }
 
+const flatCube = cube => "x"+cube.x+"y"+cube.y+"z"+cube.z;
+
 function cubeCoordinates(hex, hexPerSide){
 	let { cell, row } = hex
 	var x = cell - Math.min(hexPerSide - 1, row)
@@ -71,6 +73,10 @@ function cubeSpiral(center, radius, corner = 4){
 module.exports = {
 	cubeCoordinates,
 	cubeSpiral,
-	Cube, cubeScale, cubeEqual, cubeNeighbor,
+	Cube,
+	cubeScale,
+	cubeEqual,
+	cubeNeighbor,
+	flatCube,
 	cubeDirections
 }

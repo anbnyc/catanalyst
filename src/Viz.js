@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import * as HexDataGen from 'hex-data-gen';
 
-import { odds, getAllTiles, flatCube } from './utils'
-import { cubeCoordinates, cubeSpiral, Cube } from './utilsCube'
+import { odds, getAllTiles } from './utils'
+import { cubeCoordinates, cubeSpiral, Cube, flatCube } from './utilsCube'
 import Hex from './Hex'
 import Bar from './Bar'
 

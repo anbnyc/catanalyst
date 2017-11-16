@@ -24,7 +24,7 @@ class Hex extends Component {
 					y={sideLen-5}>
 	      	<tspan>{d.odds.roll}</tspan>
 	      	<tspan className="small" x={0} dy={15}>{"("+(d.odds.letter === "desert" ? "" : d.odds.letter)}</tspan>
-	      	<tspan className="small" dx={d.odds.letter === "desert" ? 0 : 5} dy={0}>{d.odds.roll+"/36)"}</tspan>
+	      	<tspan className="small" dx={d.odds.letter === "desert" ? 0 : 5} dy={0}>{d.odds.probability+"/36)"}</tspan>
     		</text>
       </g>
     );
