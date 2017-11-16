@@ -33,7 +33,8 @@ class App extends Component {
           sliderValue={+this.state.sliderValue}
           hexPerSide={3}
           sideLen={sideLen}
-          width={window.innerWidth - 15} />
+          height={330}
+          width={768} />
       </div>
     );
   }
