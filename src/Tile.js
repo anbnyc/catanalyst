@@ -7,9 +7,9 @@ import './Tile.css'
 class Hex extends Component {
   
   render() {
-
-  	const { hexPerSide, sideLen, d, starter } = this.props
-  	const r3o2s = sideLen * Math.sqrt(3)/2
+  	const { hexPerSide, d, starter, vertical } = this.props
+    const sideLen = vertical ? 30 : 40;
+    const r3o2s = sideLen * Math.sqrt(3)/2
 
     return (
       <g 

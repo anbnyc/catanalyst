@@ -13,19 +13,31 @@ class Viz extends Component {
 		super(props)
 		this.state = {
 			allTiles: getAllTiles(),
-			newTiles: false
+			newTiles: false,
+			hexPerSide: 3,
+			width: window.innerWidth,
+			height: window.innerHeight,
+			vertical: window.innerWidth - 15 < 768,
 		}
 		this.generateData = this.generateData.bind(this)
 		this.reshapeBarData = this.reshapeBarData.bind(this)
 		this.updateTiles = this.updateTiles.bind(this)
+		this.updateWindowSize = this.updateWindowSize.bind(this)
 	}
 
 	componentDidMount(){
 		d3.select("svg")
-			.attr("height", 330)
-			.attr("width", this.props.width)
+			.attr("height", this.state.height)
+			.attr("width", this.state.width)
 		let data = this.generateData()
 		this.setState({ data, barData: this.reshapeBarData(data) })
+		d3.select(window).on('resize', this.updateWindowSize)
+	}
+
+	componentWillUpdate(){
+		d3.select("svg")
+			.attr("height", this.state.height)
+			.attr("width", this.state.width)
 	}
 
 	componentDidUpdate(nextProps){
@@ -35,20 +47,13 @@ class Viz extends Component {
 		}
 	}
 
-  render() {
-    return (
-      <div className="Hex">
-      	<svg>
-      		<Hex
-      			{ ...this.props }
-      			data={this.state.data} />
-    			<Bar
-    				{ ...this.props }
-    				barData={this.state.barData} />
-      	</svg>
-      </div>
-    );
-  }
+	updateWindowSize(){
+		this.setState({
+			width: window.innerWidth,
+			height: window.innerHeight,
+			vertical: window.innerWidth - 15 < 768
+		})
+	}
 
   updateTiles(){
   	this.setState({
@@ -77,7 +82,8 @@ class Viz extends Component {
   }
 
 	generateData(){
-		const { sliderValue, hexPerSide } = this.props
+		const { sliderValue } = this.props;
+		const { hexPerSide } = this.state;
 		let allTiles = [ ...this.state.allTiles ]
 		let rawData = HexDataGen(hexPerSide, false)
 			.reduce((t,r) => [ ...t, ...r ])
@@ -102,6 +108,21 @@ class Viz extends Component {
 			}
 		})
 	}
+
+  render() {
+    return (
+      <div className="Hex">
+      	<svg>
+      		<Hex
+      			{ ...this.props }
+      			{ ...this.state } />
+    			<Bar
+    				{ ...this.props }
+    				{ ...this.state } />
+      	</svg>
+      </div>
+    );
+  }
 
 }
 

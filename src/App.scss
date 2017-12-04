@@ -22,7 +22,15 @@
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.reset-button{
+  width: 100px;
+  padding: 8px;
+  color: #fff;
+  border-radius: 4px;
+  background-color: #888;
+  border: 1px solid #444;
+}
+
+.Slider{
+  margin: 10px 0px 10px 0px;
 }
